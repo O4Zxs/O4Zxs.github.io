@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>にしきBot</title>
+  <style>
+    .container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .push-area {
+      position: absolute;
+      bottom: 44px;
+      left: 71%;
+      transform: translateX(-50%);
+      width: 65px;
+      height: 13px;
+      cursor: pointer;
+    }
+
+    .retry-area {
+      position: absolute;
+      bottom: 42px;
+      right: 23px;
+      width: 55px;
+      height: 9px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .share-image {
+      display: block;
+      margin: 10px auto;
+      width: 150px;
+    }
+
+    .share-area {
+      position: relative; /* ←ここ変更 */
+      margin: -83px auto 0; /* 位置調整 */
+      width: 57px;
+      height: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body style="text-align:center; margin-top:30px;">
+
+  <div class="container">
+    <img id="image" src="home.png" width="250">
+
+    <div class="push-area" onclick="nishiki()"></div>
+    <div class="retry-area" onclick="resetGame()"></div>
+  </div>
+
+  <!-- シェア（外に出す） -->
+  <img src="share.png" class="share-image">
+  <div class="share-area" onclick="shareResult()"></div>
+
+  <script>
+    let currentResult = "";
+
+    function nishiki() {
+      document.querySelector('.push-area').style.display = 'none';
+      document.querySelector('.retry-area').style.display = 'block';
+
+      document.getElementById("image").src = "home.png";
+
+      setTimeout(() => {
+        if (Math.random() < 0.03) {
+          document.getElementById("image").src = "very.png";
+          currentResult = "Very!!本人にバレたらVery怒られそうだ";
+        } else {
+          document.getElementById("image").src = "nishiki.png";
+          currentResult = "ﾝにしき だった。普段はASMR配信をしているよ";
+        }
+      }, 500);
+    }
+
+    function resetGame() {
+      document.getElementById("image").src = "home.png";
+
+      document.querySelector('.push-area').style.display = 'block';
+      document.querySelector('.retry-area').style.display = 'none';
+    }
+
+    function shareResult() {
+      if (!currentResult) {
+        alert("まだ結果が出てないよ！");
+        return;
+      }
+
+      if (navigator.share) {
+        navigator.share({
+          title: "にしきbot",
+          text: "5%の確率でVeryが出るにしきbot👟✩\n\n結果👇\n\n"
+    + currentResult +
+    "\n\n⬇リ
+        });
+      } else {
+        alert("この端末ではシェアできません");
+      }
+    }
+  </script>
+
+</body>
+</html>
