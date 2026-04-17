@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>にしきBot</title>
+
+  <style>
+    body {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    /* ===== メインガチャ ===== */
+    .container {
+      position: relative;
+      display: inline-block;
+      width: 95%;
+      max-width: 700px;
+    }
+
+    .main-image {
+      width: 100%;
+    }
+
+    /* Push */
+    .push-area {
+      position: absolute;
+      bottom: 22%;
+      left: 71%;
+      transform: translateX(-50%);
+      width: 26%;
+      height: 8%;
+      cursor: pointer;
+    }
+
+    /* もう一回 */
+    .retry-area {
+      position: absolute;
+      bottom: 20%;
+      right: 10%;
+      width: 22%;
+      height: 5%;
+      cursor: pointer;
+      display: none;
+    }
+
+    /* ===== シェア ===== */
+    .share-container {
+      position: relative;
+      width: 95%;
+      max-width: 300px;
+      margin: 15px auto;
+    }
+
+    .share-image {
+      width: 100%;
+    }
+
+    .share-area {
+      position: absolute;
+      bottom: 57%;   /* ←ここで位置調整 */
+      left: 51%;
+      transform: translateX(-50%);
+      width: 38%;
+      height: 10%;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ガチャ -->
+  <div class="container">
+    <img id="image" src="home.png" class="main-image">
+
+    <div class="push-area" onclick="nishiki()"></div>
+    <div class="retry-area" onclick="resetGame()"></div>
+  </div>
+
+  <!-- シェア -->
+  <div class="share-container">
+    <img src="share.png" class="share-image">
+    <div class="share-area" onclick="shareResult()"></div>
+  </div>
+
+  <script>
+    let currentResult = "";
+
+    function nishiki() {
+      document.querySelector('.push-area').style.display = 'none';
+      document.querySelector('.retry-area').style.display = 'block';
+
+      document.getElementById("image").src = "home.png";
+
+      setTimeout(() => {
+        if (Math.random() < 0.03) {
+          document.getElementById("image").src = "very.png";
+          currentResult = "Very!!本人にバレたらVery怒られそうだ";
+        } else {
+          document.getElementById("image").src = "nishiki.png";
+          currentResult = "ﾝ『にしき』が出たよ!!彼はすにすて㌠の一員で、普段はASMR配信を行っている人なんだ。";
+        }
+      }, 500);
+    }
+
+    function resetGame() {
+      document.getElementById("image").src = "home.png";
+
+      document.querySelector('.push-area').style.display = 'block';
+      document.querySelector('.retry-area').style.display = 'none';
+    }
+
+    function shareResult() {
+      if (!currentResult) {
+        alert("まだ結果が出てないよ！");
+        return;
+      }
+
+      if (navigator.share) {
+        navigator.share({
+          title: "にしきbot",
+          text:
+            "5%の確率でVeryが出るにしき👟💨\n\n［ 結果 ］\n" +
+            currentResult +
+            "\n\n⬇リスナーちゃんも挑戦してみて⬇\nhttp://リンク先"
+        });
+      } else {
+        alert("この端末ではシェアできません");
+      }
+    }
+  </script>
+
+</body>
+</html>
